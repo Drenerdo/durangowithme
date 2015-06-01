@@ -16,6 +16,8 @@ using WindowsPreview.Kinect;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
+
+
 namespace durangowithme
 {
     /// <summary>
@@ -26,12 +28,18 @@ namespace durangowithme
         public MainPage()
         {
             this.InitializeComponent();
-
         }
 
         void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             sensor = KinectSensor.GetDefault();
+            irReader = sensor.InfraredFrameSource.OpenReader();
+            FrameDescription fd = sensor.InfraredFrameSource.FrameDescription;
+            irData = new ushort[ud.LengthInPixels];
+            irDataConverted = new byte[fd.LengthInPixels * 4];
+            irBitmap = new WriteableBitmap(fd.Width, fd.Height);
+            image.Source = irBitmap;
+            bodies = new Body[6];
         }
     }
 }
